@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="/static/CSS/style.css" />
+      <link rel="stylesheet" type="text/css" href="/static/CSS/table.css" />
+    <link rel="stylesheet" type="text/css" href="/static/CSS/zatemnenie.css" />
+    <link rel="stylesheet" type="text/css" href="/static/CSS/form_window.css" />
+    <title>Библиотека</title>
+	  {% import "macros.html" as macros %}
+  </head>
+  <body>
+  <div class=menu>
+    <ul >
+        <img src='/static/images/2.png' width="50" height="50">
+        <li><a> Основные фонды</a></li>
+        <li class=active><a href={{ url_for("index") }}>Библиотека</a></li>
+        <li><a> Профиль</a></li>
+        <li><a href={{ url_for("login") }}> Выход</a></li>
+    </ul>
+</div>
+
+  <div class=menu2>
+    <ul>
+        <li><a href="#zatemnenie">Открыть/Изменить</a></li>
+        <li><a href="#zatemnenie2">Добавить</a></li>
+        <li><a href="#zatemnenie3">Поиск</a></li>
+        <li><a>Фильтр</a></li>
+        <li><a>Удалить</a></li>
+    </ul>
+  </div>
+<!--Открыть/Изменить-->
+  {{ macros.render_change(select_book,id_book,old_author,tags,types,authors,len,int)}}
+  <!--Добавить-->
+  <div id="zatemnenie2">
+      <div id="block_view3">
+        <form action="{{ url_for('index') }}" method="get">
+        <div class="win">
+            <p>Добавить книгу:</p>
+        <p>
+            <label>
+                Авторы:
+                <input type="text" name="new_in_authors" required>
+            </label>
+            </p>
+        <p>
+          <label>
+                Название:
+                <input type="text" name="new_in_name" required>
+            </label>
+            </p>
+        <p>
+        <p>
+          <label>
+                Том:
+                <input type="text" name="new_in_tom">
+            </label>
+            </p>
+        <p>
+        <p>
+          <label>
+                Год издания:
+                <input type="text" name="new_in_year">
+            </label>
+        </p>
+        <p>
+          <label>
+                Тэги:
+             {{ macros.render_tags2(combo_tags, ID_Tag, len) }}
+            </label>
+        </p>
+        <p>
+          <label>
+                Тип:
+           {{ macros.render_types2(combo_types, ID_Type, len) }}
+            </label>
+        </p>
+        <p>
+          <label>
+                Расположение:
+                <input type="text" name="new_in_rasp" required>
+            </label>
+        </p>
+        <p>
+          <label>
+                Ссылка:
+                 <input type="text" name="new_in_link">
+            </label>
+        </p>
+        <p>
+          <label>
+                Заметка:
+                <textarea class="textarea2" name="new_in_desc" ></textarea>
+            </label>
+        </p>
+        </div>
+
+        <div>
+            <p>
+            <label>
+                Аннотация:
+                <textarea class="textarea1" name="new_in_annot" ></textarea>
+            </label>
+            </p>
+            <p>
+            <label>
+                Дата последнего изменения:
+                Дата....
+            </label>
+            </p>
+            <p>
+            <label>
+                Автор последнего изменения:
+                ФИО..
+            </label>
+            </p>
+
+        </div>
+        <p>
+            <input type="submit" value="Добавить">
+        </p>
+             <a href="#" class="close">Закрыть окно</a>
+    </form>
+      </div>
+    </div>
+<!--  Поиск-->
+  <div id="zatemnenie3">
+      <div id="block_view4">
+        <form action="{{ url_for('index') }}" method="get">
+        <div>
+            <p>Поиск книги:</p>
+        <p>
+            <label>
+                Авторы:
+                {{ macros.render_author3(combo_authors, ID_Tag, len) }}
+            </label>
+            </p>
+        <p>
+          <label>
+                Тэги:
+             {{ macros.render_tags3(combo_tags, ID_Tag, len) }}
+            </label>
+        </p>
+        <p>
+          <label>
+                Тип:
+           {{ macros.render_types3(combo_types, ID_Type, len) }}
+            </label>
+        </p>
+
+        </div>
+        <p>
+            <input type="submit" value="Поиск" name="search">
+        </p>
+             <a href="#" class="close">Закрыть окно</a>
+    </form>
+      </div>
+    </div>
+  </p>
+    {{ macros.render_table2("Книги", books, len) }}
+  </p>
+
+<!--  <div class="mobile-table">-->
+<!--<table class="iksweb">-->
+<!--    <thead>-->
+<!--<tr>-->
+<!--	<th>Заголовки</th>-->
+<!--	<th>Заголовки</th>-->
+<!--	<th>Заголовки</th>-->
+<!--	<th>Заголовки</th>-->
+<!--    <th>Заголовки</th>-->
+<!--    <th>Заголовки</th>-->
+<!--    <th>Заголовки</th>-->
+<!--</tr>-->
+<!--</thead>-->
+<!--	<tbody>-->
+<!--		<tr>-->
+<!--			<td></td>-->
+<!--			<td></td>-->
+<!--			<td></td>-->
+<!--			<td></td>-->
+<!--			<td></td>-->
+<!--			<td></td>-->
+<!--			<td></td>-->
+<!--		</tr>-->
+<!--		<tr>-->
+<!--			<td></td>-->
+<!--			<td></td>-->
+<!--			<td></td>-->
+<!--			<td></td>-->
+<!--			<td></td>-->
+<!--			<td></td>-->
+<!--			<td></td>-->
+<!--		</tr>-->
+<!--		<tr>-->
+<!--			<td></td>-->
+<!--			<td></td>-->
+<!--			<td></td>-->
+<!--			<td></td>-->
+<!--			<td></td>-->
+<!--			<td></td>-->
+<!--			<td></td>-->
+<!--		</tr>-->
+<!--		<tr>-->
+<!--			<td></td>-->
+<!--			<td></td>-->
+<!--			<td></td>-->
+<!--			<td></td>-->
+<!--			<td></td>-->
+<!--			<td></td>-->
+<!--			<td></td>-->
+<!--		</tr>-->
+<!--		<tr>-->
+<!--			<td></td>-->
+<!--			<td></td>-->
+<!--			<td></td>-->
+<!--			<td></td>-->
+<!--			<td></td>-->
+<!--			<td></td>-->
+<!--			<td></td>-->
+<!--		</tr>-->
+<!--	</tbody>-->
+<!--</table>-->
+<!--  </div>-->
+
+  </body>
+</html>

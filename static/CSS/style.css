@@ -1,0 +1,89 @@
+.textarea1 {
+    resize: none;
+    height: 280px;
+    width: 370px;
+}
+
+.textarea2 {
+    resize: none;
+    width: 206px;
+    height: 71px;
+}
+
+
+/* меню страниц */
+.menu {
+    background-color: #f1f1f1;
+    box-shadow: 4px 5px 10px rgba(0, 0, 0, 0.4);
+    width: 100%;
+}
+
+/*Теперь уберем маркеры со списка и произведем выравнивание его элементов в одну
+линию*/
+.menu li {
+    display: inline-block;
+    vertical-align: top;
+    padding: 10px;
+    color: #6f6d6d;
+}
+
+.menu a {
+    text-decoration: none; /* Убирает подчеркивание для ссылок */
+    color: #6f6d6d;
+}
+
+.menu li:hover {
+    background-color: #2777EF;
+    cursor: pointer;
+    color: #f8f8f8;
+}
+
+.menu ul {
+    padding: 0px;
+}
+
+.active {
+    background-color: #2777EF;
+    color: #f8f8f8;
+}
+
+.active a:visited {
+    color: #f8f8f8;
+}
+
+.menu a:hover {
+    color: #f8f8f8;
+}
+.menu2 {
+    width: 100%;
+
+}
+.menu2 ul {
+  list-style: none; /*убираем маркеры списка*/
+  margin: 0px; /*убираем отступы*/
+  margin-left: 0px;
+  padding-left: 0; /*убираем отступы*/
+  margin-top:25px; /*делаем отступ сверху*/
+  margin-bottom:15px;
+  padding: 0px;
+}
+.menu2 a {
+  text-decoration: none; /*убираем подчеркивание текста ссылок*/
+  background:#30A8E6; /*добавляем фон к пункту меню*/
+  color:#fff; /*меняем цвет ссылок*/
+  padding:10px; /*добавляем отступ*/
+  font-family: arial; /*меняем шрифт*/
+  border-radius:4px; /*добавляем скругление*/
+  -moz-transition: all 0.3s 0.01s ease; /*делаем плавный переход*/
+  -o-transition: all 0.3s 0.01s ease;
+  -webkit-transition: all 0.3s 0.01s ease;
+}
+.menu2 a:hover {
+  background:#1C85BB;/*добавляем эффект при наведении*/
+}
+.menu2 li {
+    display: inline-block;
+    vertical-align: top;
+  margin-right:2px; /*Добавляем отступ у пунктов меню*/
+
+}

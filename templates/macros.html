@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+
+
+{% macro render_change(relation,id_book,old_author,tags,types,authors,len,int) %}
+<div id="zatemnenie">
+      <div id="block_view2">
+        <form action="{{ url_for('index') }}" method="get">
+        <div class="win">
+            <p>Книга:</p>
+        <p>
+            <label>
+                Авторы:
+                    {{ render_form(authors,relation.loc[0,'Авторы'],"ID_Author","name",len)}}
+            </label>
+            </p>
+        <p>
+          <label>
+                Название:
+                <input type="text" name="new_name" value="{{relation.loc[0,'Название']}}" required>
+            </label>
+            </p>
+        <p>
+        <p>
+          <label>
+                Том:
+                <input type="text" name="new_tom" value="{{relation.loc[0,'Том']}}">
+            </label>
+            </p>
+        <p>
+        <p>
+          <label>
+                Год издания:
+                <input type="text" name="new_year" value="{{relation.loc[0,'Год Издания']}}">
+            </label>
+        </p>
+        <p>
+          <label>
+                Тэги:
+                    {{ render_form(tags,relation.loc[0,'Тэг'],"ID_Tag","tag",len)}}
+            </label>
+        </p>
+        <p>
+          <label>
+                Тип:
+                    {{ render_form(types,relation.loc[0,'Тип'],"ID_Type","type",len)}}
+            </label>
+        </p>
+        <p>
+          <label>
+                Расположение:
+                <input type="text" name="new_rasp" value="{{relation.loc[0,'Расположение']}}" required>
+            </label>
+        </p>
+        <p>
+          <label>
+                Ссылка:
+                 <input type="text" name="new_link" value="{{relation.loc[0,'Ссылка']}}" required>
+            </label>
+        </p>
+        <p>
+          <label>
+                Заметка:
+                <textarea class="textarea2" name="new_desc" value="{{relation.loc[0,'Заметки']}}" ></textarea>
+            </label>
+        </p>
+        </div>
+
+        <div>
+            <p>
+            <label>
+                Аннотация:
+                <textarea class="textarea1"  name="new_annot" value="{{relation.loc[0,'Аннотация']}}"></textarea>
+            </label>
+            </p>
+            <p>
+            <label>
+                Дата последнего изменения:
+                Дата....
+            </label>
+            </p>
+            <p>
+            <label>
+                Автор последнеего изменения:
+                ФИО..
+            </label>
+            </p>
+
+        </div>
+        <p>
+            <input hidden type="text" value="{{old_author.loc[0,'Авторы']}}" name="old_author">
+            <input hidden type="text" value="{{id_book}}" name="id_book">
+            <input type="submit" value="Сохранить изменения" name="confirm">
+        </p>
+             <a href="#" class="close">Закрыть окно</a>
+        </form>
+    </div>
+</div>
+{% endmacro %}
+
+{% macro render_form(relation, id_client, name_ID, name, len) %}
+{% if name=='name' %}
+<select name="new_authors">
+{% else %}
+<select name="{{name}}">
+{% endif %}
+    <option value="">
+    {% set n = len(relation) %}
+    <!-- формируем строки списка (каждое значение поля reader_name - строка списка) в виде <option [selected] value = код_читателя> ФИО </option> -->
+    {% for i in range(n) %}
+    {% set id_c = relation.loc[i, name_ID] %}
+    <!-- атрибут value элемента будет совпадать с id читателя -->
+    {% if id_c == id_client %}
+    <!-- если код читателя из таблицы совпадает с кодом текущего читателя устанавливаем атрибут selected -->
+    <option selected value={{id_c}}>
+        {% else %}
+    <option value={{id_c}}>
+        {% endif %}
+        {{ relation.loc[i, name] }}
+    </option>
+    {% endfor %}
+</select>
+{% endmacro %}
+
+{% macro render_table(table_name, relation, id, len) %}
+    <p>
+        <b>{{ table_name }} </b>
+    </p>
+    {% set n = len(relation) %}
+    <table border="1">
+        <tr style="background-color: rgb(242, 242, 242);">
+            {% for name in relation.dtypes.index %}
+                {% if name != id %}
+                    <th>{{ name }}</th>
+                {% endif %}
+            {% endfor %}
+        </tr>
+        <tbody>
+
+        {% for i in range(n) %}
+            <tr>
+                {% for name in relation.dtypes.index %}
+                    {% if name != id %}
+                        <td>
+                            {% if relation.loc[i, name] == None %}
+                                <form action='' method="get">
+                                    <input type="hidden" name=return
+                                           value={{ relation.loc[i, "book_reader_id"]}}>
+                                    <input type="submit" value="Сдать">
+                                </form>
+                            {% else %}
+                                {{ relation.loc[i, name] }}
+                            {% endif %}
+                        </td>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endmacro %}
+
+
+{% macro render_table2(table_name, relation, len) %}
+    <p>
+        <b>{{ table_name }} </b>
+    </p>
+    {% set n = len(relation) %}
+    <table border="1" >
+        <tr style="background-color: rgb(242, 242, 242);">
+            {% for name in relation.dtypes.index %}
+                    <th>{{ name }}</th>
+            {% endfor %}
+        </tr>
+        <tbody>
+
+        {% for i in range(n) %}
+            <tr>
+                {% for name in relation.dtypes.index %}
+
+                        <td>
+                            {% if relation.loc[i, name] == None %}
+                              –
+                            {% elif relation.loc[i, 'Номер'] %}
+                             <a href="#zatemnenie">{{ relation.loc[i, name] }}</a>
+                            {% else %}
+                            {{ relation.loc[i, name] }}
+                            {% endif %}
+                        </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endmacro %}
+
+
+{% macro render_tags(combo_box, ID_Tag, len) %}
+    <select name="new_tag" required>
+        {% set n = len(combo_box) %}
+        <!-- формируем строки списка (каждое значение поля
+        reader_name - строка списка) в виде
+        <option [selected] value = код_читателя> ФИО </option>
+        -->
+        {% for i in range(n) %}
+            {% set id_r = combo_box.loc[i, "ID_Tag"] %}
+            <!-- атрибут value элемента будет совпадать с id читателя -->
+            {% if id_r == ID_Tag %}
+                <!-- если код читателя из таблицы совпадает с кодом
+                текущего читателя устанавливаем атрибут selected -->
+                <option selected value={{ id_r }} >
+                    {% else %}
+                <option value={{ id_r }}>
+            {% endif %}
+        {{ combo_box.loc[i, "tag"] }}
+        </option>
+        {% endfor %}
+    </select>
+{% endmacro %}
+
+{% macro render_types(combo_box, ID_Type, len) %}
+    <select name="new_type" required>
+        {% set n = len(combo_box) %}
+        <!-- формируем строки списка (каждое значение поля
+        reader_name - строка списка) в виде
+        <option [selected] value = код_читателя> ФИО </option>
+        -->
+        {% for i in range(n) %}
+            {% set id_r = combo_box.loc[i, "ID_Type"] %}
+            <!-- атрибут value элемента будет совпадать с id читателя -->
+            {% if id_r == ID_Type %}
+                <!-- если код читателя из таблицы совпадает с кодом
+                текущего читателя устанавливаем атрибут selected -->
+                <option selected value={{ id_r }} >
+                    {% else %}
+                <option value={{ id_r }}>
+            {% endif %}
+        {{ combo_box.loc[i, "type"] }}
+        </option>
+        {% endfor %}
+    </select>
+{% endmacro %}
+
+{% macro render_filters(name, category, selected, len) %}
+    {% set n = len(category) %}
+    <fieldset>
+        <legend>{{ name }}</legend>
+        {% for i in range(n) %}
+            <div class="checkbox-wrapper">
+                {% set id_r = category.loc[i, category.columns[0]] %}
+                <input type="checkbox" name={{ category.columns[0] }} value={{ category.loc[i, category.columns[0]] }}
+                        {% if id_r in selected %}
+                            checked
+                        {% endif %}
+                >
+                <label>{{ category.loc[i, category.columns[1]] }}
+                    ({{ category.loc[i, category.columns[2]] }})</label>
+            </div>
+        {% endfor %}
+    </fieldset>
+{% endmacro %}
+
+{% macro render_cards(card, len) %}
+    {% set n = len(card) %}
+    {% for i in range(n) %}
+        <div class="card">
+            {% for name in card.dtypes.index %}
+                {% if name != 'ID' %}
+                    <p>{{ name }}: <b>{{ card.loc[i, name] }}</b></p>
+                {% endif %}
+            {% endfor %}
+            <div class="button-wrapper">
+                <form action="{{ url_for('index') }}" method="get">
+                    <input type="submit" value="Выбрать"
+                            {% if card.loc[i, 'Количество'] == 0 %}
+                           disabled
+                            {% endif %}
+                    >
+                    <label>
+                        <input hidden type="text" name="book" value="{{ card.loc[i, 'ID'] }}">
+                    </label>
+                </form>
+            </div>
+        </div>
+    {% endfor %}
+{% endmacro %}
+
+{% macro render_selected(relation, sel, name, len) %}
+    {% if len(sel) != 0 %}
+        <p>&nbsp;{{ name }}:
+            {% set n = len(relation) %}
+            {% for i in range(n) %}
+                {% set id_r = relation.loc[i, relation.columns[0]] %}
+                {% if id_r in sel %}
+                    {% if id_r == sel[-1] %}
+                        {{ relation.loc[i, relation.columns[1]] }}.
+                    {% else %}
+                        {{ relation.loc[i, relation.columns[1]] }},
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </p>
+    {% endif %}
+{% endmacro %}
+
+{% macro render_borrowers(table_name,bor,len) %}
+    <p>
+        <b>{{ table_name }}: </b>
+    </p>
+    {% if len(bor) != 0 %}
+        {% set n = len(bor) %}
+        {% for i in range(n) %}
+            <p> {{bor.loc[i, bor.columns[0]]}}</p>
+        {% endfor %}
+     {% endif %}
+{% endmacro %}
+
+{% macro render_pop(table_name,pop,len) %}
+    <p>
+        <b>{{ table_name }}: {{pop.loc[1, pop.columns[2]]}} </b>
+    </p>
+    {% if len(pop) != 0 %}
+        {% set n = len(pop) %}
+        {% for i in range(n) %}
+            <p> {{pop.loc[i, pop.columns[0]]}} | {{pop.loc[i, pop.columns[1]]}}</p>
+        {% endfor %}
+     {% endif %}
+{% endmacro %}
+
+{% macro render_pole(combo_box, reader_id, len) %}
+    <select name="reader" required>
+        {% set n = len(combo_box) %}
+        <!-- формируем строки списка (каждое значение поля
+        reader_name - строка списка) в виде
+        <option [selected] value = код_читателя> ФИО </option>
+        -->
+        {% for i in range(n) %}
+            {% set id_r = combo_box.loc[i, "reader_id"] %}
+            <!-- атрибут value элемента будет совпадать с id читателя -->
+            {% if id_r == reader_id %}
+                <!-- если код читателя из таблицы совпадает с кодом
+                текущего читателя устанавливаем атрибут selected -->
+                <option selected value={{ id_r }} name="selected_id">
+                    {% else %}
+                <option value={{ id_r }}>
+            {% endif %}
+        {{ combo_box.loc[i, "reader_name"] }}
+        </option>
+        {% endfor %}
+    </select>
+{% endmacro %}
+
+<!-- Макрос для формирования поля со списком -->
+{% macro render_types2(relation, ID_Type, len) %}
+<select name="new_in_type" required>
+    <option value="">
+    {% set n = len(relation) %}
+    <!-- формируем строки списка (каждое значение поля reader_name - строка списка) в виде <option [selected] value = код_читателя> ФИО </option> -->
+    {% for i in range(n) %}
+    {% set id_c = relation.loc[i, "ID_Type"] %}
+    <!-- атрибут value элемента будет совпадать с id читателя -->
+    {% if id_c == id_client %}
+    <!-- если код читателя из таблицы совпадает с кодом текущего читателя устанавливаем атрибут selected -->
+    <option selected value={{id_c}}>
+        {% else %}
+    <option value={{id_c}}>
+        {% endif %}
+        {{ relation.loc[i, "type"] }}
+    </option>
+    {% endfor %}
+</select>
+{% endmacro %}
+
+{% macro render_tags2(relation, ID_Tag, len) %}
+<select name="new_in_tag" required>
+    <option value="">
+    {% set n = len(relation) %}
+    <!-- формируем строки списка (каждое значение поля reader_name - строка списка) в виде <option [selected] value = код_читателя> ФИО </option> -->
+    {% for i in range(n) %}
+    {% set id_c = relation.loc[i, "ID_Tag"] %}
+    <!-- атрибут value элемента будет совпадать с id читателя -->
+    {% if id_c == id_client %}
+    <!-- если код читателя из таблицы совпадает с кодом текущего читателя устанавливаем атрибут selected -->
+    <option selected value={{id_c}}>
+        {% else %}
+    <option value={{id_c}}>
+        {% endif %}
+        {{ relation.loc[i, "tag"] }}
+    </option>
+    {% endfor %}
+</select>
+{% endmacro %}
+
+{% macro render_author3(relation, ID_Author, len) %}
+<select name="search_in_author">
+    <option value="">
+    {% set n = len(relation) %}
+    <!-- формируем строки списка (каждое значение поля reader_name - строка списка) в виде <option [selected] value = код_читателя> ФИО </option> -->
+    {% for i in range(n) %}
+    {% set id_c = relation.loc[i, "ID_Author"] %}
+    <!-- атрибут value элемента будет совпадать с id читателя -->
+    {% if id_c == id_client %}
+    <!-- если код читателя из таблицы совпадает с кодом текущего читателя устанавливаем атрибут selected -->
+    <option selected value={{id_c}}>
+        {% else %}
+    <option value={{id_c}}>
+        {% endif %}
+        {{ relation.loc[i, "name"] }}
+    </option>
+    {% endfor %}
+</select>
+{% endmacro %}
+
+<!-- Макрос для формирования поля со списком -->
+{% macro render_types3(relation, ID_Type, len) %}
+<select name="search_in_type" >
+    <option value="">
+    {% set n = len(relation) %}
+    <!-- формируем строки списка (каждое значение поля reader_name - строка списка) в виде <option [selected] value = код_читателя> ФИО </option> -->
+    {% for i in range(n) %}
+    {% set id_c = relation.loc[i, "ID_Type"] %}
+    <!-- атрибут value элемента будет совпадать с id читателя -->
+    {% if id_c == id_client %}
+    <!-- если код читателя из таблицы совпадает с кодом текущего читателя устанавливаем атрибут selected -->
+    <option selected value={{id_c}}>
+        {% else %}
+    <option value={{id_c}}>
+        {% endif %}
+        {{ relation.loc[i, "type"] }}
+    </option>
+    {% endfor %}
+</select>
+{% endmacro %}
+
+{% macro render_tags3(relation, ID_Tag, len) %}
+<select name="search_in_tag">
+    <option value="">
+    {% set n = len(relation) %}
+    <!-- формируем строки списка (каждое значение поля reader_name - строка списка) в виде <option [selected] value = код_читателя> ФИО </option> -->
+    {% for i in range(n) %}
+    {% set id_c = relation.loc[i, "ID_Tag"] %}
+    <!-- атрибут value элемента будет совпадать с id читателя -->
+    {% if id_c == id_client %}
+    <!-- если код читателя из таблицы совпадает с кодом текущего читателя устанавливаем атрибут selected -->
+    <option selected value={{id_c}}>
+        {% else %}
+    <option value={{id_c}}>
+        {% endif %}
+        {{ relation.loc[i, "tag"] }}
+    </option>
+    {% endfor %}
+</select>
+{% endmacro %}
